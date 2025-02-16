@@ -1,6 +1,5 @@
 "use client"
 import { motion } from "framer-motion";
-import { twMerge } from "tailwind-merge";
 
 const testimonials = [
   {
@@ -57,11 +56,11 @@ const TestimonialsComponent =(props: {className?:string;testimonials:typeof test
   <motion.div 
   
   className=" flex flex-col gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] ">
-    {[...new Array(1)].fill(0).map((_,idx) => (
+    {[...new Array(1)].fill(0).map((_) => (
         <>
  {
     props.testimonials.map((testimonial,idx) => (
-      <div  className="p-10 justify-center flex flex-col gap-6 mt-5  bg-black border rounded-3xl shadow-[0_7px_14px_#EAEAEA text-white" >
+      <div key={idx} className="p-10 justify-center flex flex-col gap-6 mt-5  bg-black border rounded-3xl shadow-[0_7px_14px_#EAEAEA text-white" >
         <div>{testimonial.text}</div>
         <div className="flex gap-4 mt-2 mb-2">
           <div className="text-white">

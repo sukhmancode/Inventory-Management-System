@@ -1,3 +1,5 @@
+import { CallToAction } from "./Components/CTA";
+import { Footer } from "./Components/Footer";
 import { BackgroundPaths } from "./Components/Hero";
 import { Navbar } from "./Components/Navbar";
 import { Pricing } from "./Components/Pricing";
@@ -11,6 +13,8 @@ export default function Home() {
       <BackgroundPaths/>
       <Testimonials/>
       <Pricing/>
+      <CallToAction/>
+      <Footer/>
     </div>
   );
 }
