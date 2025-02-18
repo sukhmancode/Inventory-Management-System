@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { SignUpPopup } from "./SignUpPopup";
 
 export function Navbar() {
     return (
@@ -10,7 +10,7 @@ export function Navbar() {
             </div>
 
             <div>
-                <Button className="bg-gradient-to-b from bg-neutral-900 to bg-neutral-700/100">Try for free</Button>
+                <SignUpPopup/>
             </div>
         </div>
     )

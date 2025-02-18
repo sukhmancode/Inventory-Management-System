@@ -1,19 +1,5 @@
 "use client";
 import { Facebook, Instagram, Twitter } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-
-const socialLinks = [
-  {
-    img: <Instagram/>
-  },
-  {
-    img:<Facebook/>
-  },
-  {
-    img:<Twitter/>
-  }
-]
 
 export const Footer = () => {
   return(
