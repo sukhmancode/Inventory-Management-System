@@ -13,7 +13,7 @@ export default async function DashboardLayout({children}: {children : ReactNode}
             <div className="hidden md:block border-r bg-muted/40">
                 <div className="flex h-full max-h-screen flex-col gap-2">
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                        <Link href={"/"} className="flex gap-2">
+                        <Link href={"/dashboard"} className="flex gap-2">
                         <div className="inline-block text-transparent bg-clip-text 
                             bg-gradient-to-r from-white to-black 
                             dark:from-white dark:to-white/80 font-bold text-2xl">

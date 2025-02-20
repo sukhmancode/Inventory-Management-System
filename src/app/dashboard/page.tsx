@@ -51,7 +51,7 @@ export default function Dashboard() {
                 {products.map((product, index) => (
                     <Card key={index}>
                         <CardHeader>
-                            <Image src={product.image_url} alt={product.productName} width={300} height={200} className="rounded-lg" />
+                            <img src={product.image_url} alt={product.productName} className="rounded-lg w-[300px] h-[300px]" />
                             <CardTitle>{product.productName}</CardTitle>
                             <CardDescription>Price: ${product.productPrice}</CardDescription>
                         </CardHeader>
