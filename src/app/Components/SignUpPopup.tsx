@@ -1,14 +1,19 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 
 export function SignUpPopup() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const router = useRouter();
+    const [open, setOpen] = useState(false);
+    const [storeId, setStoreId] = useState("");
+    const [storePassword, setStorePassword] = useState("");
+    const [storeName, setStoreName] = useState("");
+    const [storeLocation, setStoreLocation] = useState("");
+    const [storeContact, setStoreContact] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -19,37 +24,55 @@ export function SignUpPopup() {
         setError("");
         setSuccess("");
 
+        const requestData = { 
+            storeId: Number(storeId), 
+            storePassword, 
+            storeName, 
+            storeLocation, 
+            storeContact 
+        };
+
         try {
-            const response = await fetch("https://flask-api-0dth.onrender.com/signup", {
+            const response = await fetch("https://smart-inventory-management-system-5n6f.onrender.com/auth/signup", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestData),
             });
 
-            const data = await response.json();
-            if (response.ok) {
-                setSuccess("Signup successful!");
-            } else {
-                setError(data.message || "Signup failed");
+            const text = await response.text();
+            console.log("Response Status:", response.status);
+            console.log("Response Body:", text);
+
+            try {
+                const data = JSON.parse(text);
+                if (response.ok) {
+                    setSuccess("Signup successful!");
+                    setOpen(false); // Close the dialog
+                    router.push("/dashboard"); // Use router.push instead of redirect
+                } else {
+                    setError(data.message || "Signup failed");
+                }
+            } catch (parseError) {
+                console.error("JSON Parse Error:", parseError);
+                setError("Invalid response from server");
             }
         } catch (err) {
+            console.error("Fetch Error:", err);
             setError("Network error. Please try again.");
         } finally {
             setLoading(false);
         }
     };
-
+    
     return (
         <div>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button>Try for free</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[360px]">
                     <DialogHeader className="flex flex-col items-center">
-                            <DialogTitle>Sign Up</DialogTitle>
+                        <DialogTitle>Sign Up</DialogTitle>
                         <div className="inline-block text-transparent bg-clip-text 
                             bg-gradient-to-r from-neutral-900 to-neutral-700/80 
                             dark:from-white dark:to-white/80 font-bold text-2xl">
@@ -57,22 +80,49 @@ export function SignUpPopup() {
                         </div>
                     </DialogHeader>
                     <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                        <Label htmlFor="username">Username</Label>
+                        <Label htmlFor="storeId">Store ID</Label>
                         <Input 
-                            id="email"
-                            type="email" 
-                            name="username" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
+                            id="storeId"
+                            type="number" 
+                            name="storeId" 
+                            value={storeId} 
+                            onChange={(e) => setStoreId(e.target.value)} 
                             required
                         />
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="storePassword">Store Password</Label>
                         <Input 
-                            id="password"
+                            id="storePassword"
                             type="password" 
-                            name="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
+                            name="storePassword" 
+                            value={storePassword} 
+                            onChange={(e) => setStorePassword(e.target.value)} 
+                            required
+                        />
+                        <Label htmlFor="storeName">Store Name</Label>
+                        <Input 
+                            id="storeName"
+                            type="text" 
+                            name="storeName" 
+                            value={storeName} 
+                            onChange={(e) => setStoreName(e.target.value)} 
+                            required
+                        />
+                        <Label htmlFor="storeLocation">Store Location</Label>
+                        <Input 
+                            id="storeLocation"
+                            type="text" 
+                            name="storeLocation" 
+                            value={storeLocation} 
+                            onChange={(e) => setStoreLocation(e.target.value)} 
+                            required
+                        />
+                        <Label htmlFor="storeContact">Store Contact</Label>
+                        <Input 
+                            id="storeContact"
+                            type="text" 
+                            name="storeContact" 
+                            value={storeContact} 
+                            onChange={(e) => setStoreContact(e.target.value)} 
                             required
                         />
                         {error && <p className="text-red-500">{error}</p>}

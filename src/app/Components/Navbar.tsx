@@ -1,3 +1,4 @@
+import { LoginPopup } from "./LoginPopup";
 import { SignUpPopup } from "./SignUpPopup";
 
 export function Navbar() {
@@ -9,8 +10,9 @@ export function Navbar() {
                 TEAM T3
             </div>
 
-            <div>
+            <div className="flex gap-3">
                 <SignUpPopup/>
+                <LoginPopup/>
             </div>
         </div>
     )
