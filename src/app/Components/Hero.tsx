@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 function FloatingPaths({ position }: { position: number }) {
   const paths = Array.from({ length: 26 }, (_, i) => ({
@@ -112,7 +113,7 @@ export function BackgroundPaths({
                             group-hover:-translate-y-0.5 border border-black/10 dark:border-white/10
                             hover:shadow-md dark:hover:shadow-neutral-800/50"
             >
-              <span className="opacity-90 group-hover:opacity-100 transition-opacity">Discover Excellence</span>
+              <Link className="opacity-90 group-hover:opacity-100 transition-opacity" href={"/dashboard"}>Go to Dashboard</Link>
               <span
                 className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 
                                 transition-all duration-300"
