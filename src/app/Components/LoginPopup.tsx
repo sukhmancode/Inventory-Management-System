@@ -29,84 +29,24 @@ export function LoginPopup() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ 
-                    storeId: Number(storeId), // Convert to number as per API requirement
+                    storeId: Number(storeId), 
                     storePassword: storePassword 
                 }),
             });
 
-            // Get the raw text first
-            const responseText = await response.text();
-            console.log('Raw Response:', responseText);
-
-            // Try to parse it as JSON
-            let data;
-            try {
-                data = JSON.parse(responseText);
-                console.log('Parsed Response:', data);
-            } catch (parseError) {
-                console.error('JSON Parse Error:', parseError);
-                setError("Invalid response format from server");
-                setLoading(false);
-                return;
-            }
+            const data = await response.json();
 
             if (response.ok) {
-                // Check if we have a token in the response
-                if (data.Token) {
-                    console.log('Token received:', data.Token);
-                    
-                    // Store the token
-                    localStorage.setItem('authToken', data.Token);
-                    
-                    // Store user ID
-                    localStorage.setItem('storeId', storeId);
-                    
-                    setSuccess("Login successful!");
-                    setOpen(false);
-                    
-                    // Navigate to dashboard
-                    router.push("/dashboard");
-                } else {
-                    console.error('No token in response:', data);
-                    setError("Login successful but no token received");
-                }
+                setSuccess("Login successful!");
+                setOpen(false);
+                router.push("/dashboard");
             } else {
-                // Handle specific error messages from the server
-                const errorMessage = data.message || data.error || "Login failed";
-                console.error('Login Error:', errorMessage);
-                setError(errorMessage);
+                setError(data.message || "Login failed");
             }
         } catch (err) {
-            console.error("Network or parsing error:", err);
             setError("Network error. Please try again.");
         } finally {
             setLoading(false);
-        }
-    };
-
-    // Function to validate stored token
-    const checkStoredToken = () => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            console.log('Stored token:', token);
-            // You can add token validation logic here
-            // For example, check if it's a valid JWT format
-            try {
-                const parts = token.split('.');
-                if (parts.length === 3) {
-                    const payload = JSON.parse(atob(parts[1]));
-                    console.log('Token payload:', payload);
-                    // Check expiration
-                    if (payload.exp && payload.exp * 1000 > Date.now()) {
-                        console.log('Token is valid and not expired');
-                    } else {
-                        console.log('Token is expired');
-                        localStorage.removeItem('authToken');
-                    }
-                }
-            } catch (e) {
-                console.error('Token validation error:', e);
-            }
         }
     };
 
@@ -114,7 +54,7 @@ export function LoginPopup() {
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <Button onClick={checkStoredToken}>Login</Button>
+                    <Button>Login</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[360px]">
                     <DialogHeader className="flex flex-col items-center">
